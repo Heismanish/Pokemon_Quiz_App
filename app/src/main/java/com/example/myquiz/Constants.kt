@@ -2,6 +2,10 @@ package com.example.myquiz
 
 object Constants {
 
+    const val User_Name:String = "user_name"
+    const val totalQuestions:String = "total_question"
+    const val correctAnswer:String = "correct_answers"
+
     fun getQuestions(): ArrayList<Questions>{
         val questionsList = ArrayList<Questions>()
 
@@ -34,7 +38,7 @@ object Constants {
             "Charizard",
             "Eevee",
             "Nobita",
-            3
+            1
         )
         questionsList.add(que3)
 
@@ -45,7 +49,7 @@ object Constants {
             "Butterfree",
             "Garchomp",
             "Pikachu",
-            3
+            2
         )
         questionsList.add(que4)
 

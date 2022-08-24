@@ -18,10 +18,11 @@ class MainActivity : AppCompatActivity() {
             if(et_name.text.toString().isEmpty()){
                 Toast.makeText(this, "Please enter your name to proceed!!",Toast.LENGTH_LONG ).show()
             }else{
-                Intent(this, QuizQuestionsActivity::class.java).also{
-                    startActivity(it)
+                val intent = Intent(this, QuizQuestionsActivity::class.java)
+                    intent.putExtra(Constants.User_Name,et_name.text.toString()) // here a constant value is used because it's better practice
+                    startActivity(intent)
                     finish()
-                }
+
             }
         }
 

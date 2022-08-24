@@ -1,23 +1,28 @@
 package com.example.myquiz
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_quiz_questions.*
 
 class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
-    private var mCurrentPosition: Int =1
+    private var mCurrentPosition: Int = 1
     private var mQuestionList: ArrayList<Questions>? = null
     private var mSelectedOptionPosition:Int = 0;
+    private var mCorrectAnswer: Int = 0
+    private var mUsername: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz_questions)
+
+        mUsername = intent.getStringExtra(Constants.User_Name)
 
         tvOption1?.setOnClickListener(this)
         tvOption2?.setOnClickListener(this)
@@ -25,19 +30,16 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
         tvOption4?.setOnClickListener(this)
         btnSubmit?.setOnClickListener(this)
 
-
-
         mQuestionList = Constants.getQuestions()
 
         setQuestion()
         defaultOptionsView()
 
-
     }
 
     private fun setQuestion() {
 
-        mCurrentPosition = 1
+
         val question: Questions = mQuestionList!![mCurrentPosition - 1]
         progressBar?.progress =mCurrentPosition
         tvProgressNum?.text = "$mCurrentPosition/${progressBar?.max}"
@@ -48,11 +50,13 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
         tvOption3?.text = question.optionThree
         tvOption4?.text = question.optionFour
 
-        if(mCurrentPosition == mQuestionList!!.size){
+        defaultOptionsView()
+        if (mCurrentPosition == mQuestionList!!.size) {
             btnSubmit?.text = "FINISH"
-        }else{
+        } else {
             btnSubmit?.text = "SUBMIT"
         }
+
     }
 
     private fun defaultOptionsView(){
@@ -118,12 +122,48 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             R.id.btnSubmit ->{
-                // TODO "implement btnSubmit "
+
+                if( mSelectedOptionPosition == 0){
+
+                    mCurrentPosition++
+
+                    when{
+                        mCurrentPosition <= mQuestionList!!.size -> {
+                            setQuestion()
+                        }
+                        else -> {
+                          val intent = Intent( this, Result_Activity :: class.java)
+                          intent.putExtra(Constants.User_Name,mUsername)
+                          intent.putExtra(Constants.totalQuestions,mQuestionList!!.size)
+                          intent.putExtra(Constants.correctAnswer,mCorrectAnswer)
+                          startActivity(intent)
+                          finish()
+                        }
+                    }
+                } else {
+                    val questions = mQuestionList?.get(mCurrentPosition-1)
+
+                    if(questions!!.correctAnswer != mSelectedOptionPosition) {
+                        answerView(mSelectedOptionPosition, R.drawable.wrong_option_bg)
+                    }else{
+                        mCorrectAnswer++
+                    }
+                    answerView(questions.correctAnswer, R.drawable.correct_option_bg)
+
+                    if ( mCurrentPosition == mQuestionList!!.size){
+                        btnSubmit.text = "FINISH"
+                    } else{
+                        btnSubmit.text = "Go to next question"
+                    }
+
+                    mSelectedOptionPosition = 0
+                }
+
             }
         }
     }
 
-    private fun answerview(answer:Int,drawableView :Int){
+    private fun answerView(answer:Int, drawableView :Int){
         when(answer){
             1 -> {
                 tvOption1?.background = ContextCompat.getDrawable(
