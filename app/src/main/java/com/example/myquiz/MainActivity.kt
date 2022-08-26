@@ -7,6 +7,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.custom_toast.*
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,7 +17,11 @@ class MainActivity : AppCompatActivity() {
 
         btn_start.setOnClickListener {
             if(et_name.text.toString().isEmpty()){
-                Toast.makeText(this, "Please enter your name to proceed!!",Toast.LENGTH_LONG ).show()
+                Toast(this).apply{
+                    duration = Toast.LENGTH_LONG
+                    view  =layoutInflater.inflate(R.layout.custom_toast,cstoast)
+                    show()
+                }
             }else{
                 val intent = Intent(this, QuizQuestionsActivity::class.java)
                     intent.putExtra(Constants.User_Name,et_name.text.toString()) // here a constant value is used because it's better practice

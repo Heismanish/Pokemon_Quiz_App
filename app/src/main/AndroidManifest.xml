@@ -14,7 +14,7 @@
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
         tools:targetApi="31">
         <activity
-            android:name=".Result_Activity"
+            android:name=".ResultActivity"
             android:exported="false" />
         <activity
             android:name=".QuizQuestionsActivity"

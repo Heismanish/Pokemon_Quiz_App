@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_quiz_questions.*
 
@@ -132,7 +131,7 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
                             setQuestion()
                         }
                         else -> {
-                          val intent = Intent( this, Result_Activity :: class.java)
+                          val intent = Intent( this, ResultActivity :: class.java)
                           intent.putExtra(Constants.User_Name,mUsername)
                           intent.putExtra(Constants.totalQuestions,mQuestionList!!.size)
                           intent.putExtra(Constants.correctAnswer,mCorrectAnswer)
