@@ -38,7 +38,6 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun setQuestion() {
 
-
         val question: Questions = mQuestionList!![mCurrentPosition - 1]
         progressBar?.progress =mCurrentPosition
         tvProgressNum?.text = "$mCurrentPosition/${progressBar?.max}"
